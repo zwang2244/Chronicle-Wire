@@ -1,2 +1,2 @@
-net.openhft.chronicle.util
 net.openhft.chronicle.wire
+net.openhft.chronicle.wire.util
