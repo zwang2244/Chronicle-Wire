@@ -1,3 +1,6 @@
-net.openhft.chronicle.wire
-net.openhft.chronicle.wire.set
-net.openhft.chronicle.wire.util
+net.openhft.chronicle.decentred.api
+net.openhft.chronicle.decentred.dto
+net.openhft.chronicle.decentred.remote.net
+net.openhft.chronicle.decentred.remote.rpc
+net.openhft.chronicle.decentred.server
+net.openhft.chronicle.decentred.util
