@@ -512,7 +512,7 @@ public enum WireType implements Function<Bytes, Wire>, LicenceCheck {
                     @Override
                     public boolean tryAdvance(@NotNull Consumer<? super T> action) {
                         Bytes<?> bytes = wire.bytes();
-                        ReferenceOwner temp = ReferenceOwner.temporary();
+                        ReferenceOwner temp = ReferenceOwner.temporary("tryAdvance");
                         bytes.reserve(temp);
                         boolean found = false;
                         if (valueIn.hasNext()) {

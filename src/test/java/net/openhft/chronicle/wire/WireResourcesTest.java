@@ -72,7 +72,7 @@ public class WireResourcesTest {
         assertEquals(1, mb.refCount());
 
         wire = WireType.TEXT.apply(mb);
-        ReferenceOwner test = ReferenceOwner.temporary();
+        ReferenceOwner test = ReferenceOwner.temporary("test");
         wire.bytes().reserve(test);
 
         assertEquals(1, mb.mappedFile().refCount());
