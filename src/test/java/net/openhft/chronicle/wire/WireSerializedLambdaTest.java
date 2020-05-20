@@ -91,7 +91,7 @@ public class WireSerializedLambdaTest {
         updater.accept(aLong);
         assertEquals(1, aLong.get());
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -129,7 +129,7 @@ public class WireSerializedLambdaTest {
         updater.accept(aLong);
         assertEquals(-1, aLong.get());
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After

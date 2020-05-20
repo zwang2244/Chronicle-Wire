@@ -84,7 +84,7 @@ public class SequenceTest {
                     "  ]\n" +
                     "}\n", m2.toString());
         }
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

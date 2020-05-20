@@ -68,7 +68,7 @@ public class ValueOutTest extends TestCase {
 
         });
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ValueOutTest extends TestCase {
             Assert.assertArrayEquals(expected, actual);
         });
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ValueOutTest extends TestCase {
 
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After

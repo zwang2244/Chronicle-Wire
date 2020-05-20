@@ -24,7 +24,7 @@ public class ByteBufferMarshallingTest {
         o2.readMarshallable(wire);
 
         assertEquals(o1, o2);
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -56,8 +56,8 @@ public class ByteBufferMarshallingTest {
         AClass o2 = ObjectUtils.newInstance(AClass.class);
         o2.readMarshallable(wire2);
         assertEquals(o1, o2);
-        bytes.release();
-        bytes2.release();
+        bytes.releaseLast();
+        bytes2.releaseLast();
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ByteBufferMarshallingTest {
         BClass o2 = ObjectUtils.newInstance(BClass.class);
         o2.readMarshallable(bytes2);
         assertEquals(o1, o2);
-        bytes.release();
-        bytes2.release();
+        bytes.releaseLast();
+        bytes2.releaseLast();
     }
 }

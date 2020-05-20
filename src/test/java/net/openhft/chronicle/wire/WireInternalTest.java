@@ -42,7 +42,7 @@ public class WireInternalTest {
             StackTraceElement[] actualST = actual.getStackTrace();
             assertEquals(expectedST.length, actualST.length);
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 
@@ -61,7 +61,7 @@ public class WireInternalTest {
             StackTraceElement[] actualST = actual.getStackTrace();
             assertEquals(expectedST.length, actualST.length);
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 
@@ -106,7 +106,7 @@ public class WireInternalTest {
                 "--- !!data #binary\n" +
                 "userid: peter\n", actual);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

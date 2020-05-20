@@ -72,7 +72,7 @@ public class ForwardAndBackwardCompatibilityMarshableTest {
             Assert.assertTrue("3".contentEquals(dto2.three));
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -96,7 +96,7 @@ public class ForwardAndBackwardCompatibilityMarshableTest {
 
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ForwardAndBackwardCompatibilityMarshableTest {
             Assert.assertEquals(1, dto1.one);
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After

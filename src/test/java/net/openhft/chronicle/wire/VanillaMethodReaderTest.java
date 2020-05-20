@@ -73,7 +73,7 @@ public class VanillaMethodReaderTest {
                 assertEquals(5, this.instance.x);
             }
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 

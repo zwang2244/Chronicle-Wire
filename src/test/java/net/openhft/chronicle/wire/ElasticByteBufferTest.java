@@ -49,7 +49,7 @@ public class ElasticByteBufferTest {
         @NotNull String s = stringBuilder.toString();
         Assert.assertTrue(s.contains("some value of more than ten characters"));
 
-        byteBufferBytes.release();
+        byteBufferBytes.releaseLast();
     }
 
     @After

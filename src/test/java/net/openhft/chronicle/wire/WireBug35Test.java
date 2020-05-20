@@ -31,7 +31,7 @@ public class WireBug35Test {
 
         assertEquals("{seq=[{key=value}, {key=value}]}", load.toString());
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class WireBug35Test {
 
         assertEquals("{seq=[{key=value}, {key=value}]}", load.toString());
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

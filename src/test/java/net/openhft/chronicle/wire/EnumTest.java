@@ -48,7 +48,7 @@ public class EnumTest {
                     .object();
             Assert.assertTrue(enumObject == TestEnum.INSTANCE);
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 

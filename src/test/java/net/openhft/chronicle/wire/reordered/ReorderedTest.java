@@ -94,7 +94,7 @@ public class ReorderedTest {
         assertEquals("test2", sb.toString());
         assertEquals(outerClass2.toString().replace(',', '\n'), outerClass0.toString().replace(',', '\n'));
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @SuppressWarnings("rawtypes")
@@ -114,7 +114,7 @@ public class ReorderedTest {
             assertEquals(i * 11, wire.read(() -> "b").int32());
         }
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

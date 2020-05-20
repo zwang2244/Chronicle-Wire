@@ -170,7 +170,7 @@ public class NestedMapsTest {
                 .marshallable(m2)));
         assertEquals(m, m2);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -229,7 +229,7 @@ public class NestedMapsTest {
         m2.readMarshallable(wire);
         assertEquals(m, m2);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -244,7 +244,7 @@ public class NestedMapsTest {
 
         wire.writeMap(expected);
         @NotNull final Map<Integer, Integer> actual = wire.readMap();
-        bytes.release();
+        bytes.releaseLast();
         assertEquals(expected, actual);
     }
 

@@ -59,8 +59,8 @@ public class WireTextBugTest {
         @Nullable Bug b2 = (Bug) o;
         System.out.println("b2 = " + b2);
 
-        encodeWire.bytes().release();
-        decodeWire.bytes().release();
+        encodeWire.bytes().releaseLast();
+        decodeWire.bytes().releaseLast();
     }
 
     @After

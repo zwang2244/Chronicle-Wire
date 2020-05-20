@@ -59,7 +59,7 @@ public class DefaultMarshallerTest {
 
         assertEquals(oc, oc2);
 
-        text.bytes().release();
+        text.bytes().releaseLast();
     }
 
     @Test
@@ -101,7 +101,7 @@ public class DefaultMarshallerTest {
 
         assertEquals(oc, oc2);
 
-        text.bytes().release();
+        text.bytes().releaseLast();
     }
 
     @After

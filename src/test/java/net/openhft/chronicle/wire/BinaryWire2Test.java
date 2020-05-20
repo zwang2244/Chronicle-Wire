@@ -170,7 +170,7 @@ public class BinaryWire2Test {
         Bytes b = Bytes.elasticByteBuffer();
         wire.read().bytes(b);
         assertEquals("Hello", b.toString());
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -294,8 +294,8 @@ public class BinaryWire2Test {
 
         System.out.println(Wires.fromSizePrefixedBlobs(twire.bytes()));
 
-        wire.bytes().release();
-        twire.bytes().release();
+        wire.bytes().releaseLast();
+        twire.bytes().releaseLast();
     }
 
     private void writeMessage(@NotNull WireOut wire) {
@@ -325,8 +325,8 @@ public class BinaryWire2Test {
 
         System.out.println(Wires.fromSizePrefixedBlobs(twire.bytes()));
 
-        wire.bytes().release();
-        twire.bytes().release();
+        wire.bytes().releaseLast();
+        twire.bytes().releaseLast();
     }
 
     private void writeMessageContext(@NotNull WireOut wire) {
@@ -493,7 +493,7 @@ public class BinaryWire2Test {
         wire.copyTo(new TextWire(asText));
         assertEquals("message: # gzip\n" + s +
                 "\n", asText.toString());
-        asText.release();
+        asText.releaseLast();
     }
 
     @Test
@@ -660,7 +660,7 @@ public class BinaryWire2Test {
             assertEquals(wire.bytes(), bytesStore);
         });
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -681,7 +681,7 @@ public class BinaryWire2Test {
                 "  value: 15\n" +
                 "}\n", Wires.fromSizePrefixedBlobs(wire.bytes()));
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -700,7 +700,7 @@ public class BinaryWire2Test {
 
         Assert.assertEquals(putMap, newMap);
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test

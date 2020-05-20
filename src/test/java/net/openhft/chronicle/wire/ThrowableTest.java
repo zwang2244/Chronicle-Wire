@@ -21,7 +21,7 @@ public class ThrowableTest {
             Throwable t = (Throwable) wire.getValueIn().object();
             assertEquals("message", t.getMessage());
             assertTrue(t.getStackTrace()[0].toString().startsWith("net.openhft.chronicle.wire.ThrowableTest.writeReadThrowable(ThrowableTest.java"));
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 }

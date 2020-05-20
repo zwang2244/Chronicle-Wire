@@ -14,21 +14,6 @@ import java.io.InputStream;
 public class YamlSpecTest {
     static String DIR = "/yaml/spec/";
 
-    @Test
-    public void test2_1_SequenceOfScalars() {
-        Bytes b = Bytes.elasticByteBuffer();
-        try {
-            InputStream is = YamlSpecTest.class.getResourceAsStream
-                    (DIR + "2_1_SequenceOfScalars.yaml");
-
-            String actual = Marshallable.fromString(is).toString();
-            Assert.assertEquals("[Mark McGwire, Sammy Sosa, Ken Griffey]", actual);
-
-        } finally {
-            b.release();
-        }
-    }
-
     public static void doTest(String file, String expected) {
         Bytes b = Bytes.elasticByteBuffer();
         try {
@@ -41,7 +26,22 @@ public class YamlSpecTest {
             Assert.assertEquals(expected, actual);
 
         } finally {
-            b.release();
+            b.releaseLast();
+        }
+    }
+
+    @Test
+    public void test2_1_SequenceOfScalars() {
+        Bytes b = Bytes.elasticByteBuffer();
+        try {
+            InputStream is = YamlSpecTest.class.getResourceAsStream
+                    (DIR + "2_1_SequenceOfScalars.yaml");
+
+            String actual = Marshallable.fromString(is).toString();
+            Assert.assertEquals("[Mark McGwire, Sammy Sosa, Ken Griffey]", actual);
+
+        } finally {
+            b.releaseLast();
         }
     }
 
@@ -198,7 +198,7 @@ public class YamlSpecTest {
             Assert.assertEquals(expected, actual);
 
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 
@@ -225,7 +225,7 @@ public class YamlSpecTest {
                     "}", actual.replaceAll("\r", ""));
 
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 
@@ -298,7 +298,7 @@ public class YamlSpecTest {
             String actual = o.toString();
 
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 

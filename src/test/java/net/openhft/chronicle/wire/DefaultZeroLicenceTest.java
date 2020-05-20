@@ -39,7 +39,7 @@ public class DefaultZeroLicenceTest {
             assertTrue(e.getMessage().contains(
                     "A Chronicle Wire Enterprise licence is required to run this code"));
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 

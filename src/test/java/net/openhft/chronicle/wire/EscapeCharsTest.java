@@ -65,7 +65,7 @@ public class EscapeCharsTest {
         assertEquals("key " + ch + ch, "" + ch + ch, sb.toString());
         assertEquals("value " + ch + ch, "" + ch + ch, ss);
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @NotNull

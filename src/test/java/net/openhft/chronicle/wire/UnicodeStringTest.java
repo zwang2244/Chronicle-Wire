@@ -59,7 +59,7 @@ public class UnicodeStringTest {
 
     @AfterClass
     public static void release() {
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test

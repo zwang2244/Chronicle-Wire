@@ -230,7 +230,7 @@ public class YamlWireTest {
         @Nullable Object o = WireType.TEXT.fromString(textYaml);
         Assert.assertEquals("{map={some={key=value}, some-other={key=value}}}", o.toString());
 
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -241,7 +241,7 @@ public class YamlWireTest {
         wire.write();
         assertEquals("\"\": \"\": \"\": ", wire.toString());
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @NotNull
@@ -873,11 +873,11 @@ public class YamlWireTest {
                         .toString());
             }
         } finally {
-            abcd.release();
+            abcd.releaseLast();
 
             WireMarshaller wm = WireMarshaller.WIRE_MARSHALLER_CL.get(ABCD.class);
             ABCD abcd0 = (ABCD) wm.defaultValue();
-            abcd0.release();
+            abcd0.releaseLast();
         }
     }
 
@@ -937,8 +937,8 @@ public class YamlWireTest {
             dto2 = Marshallable.fromString(cs);
             assertEquals(cs, dto2.toString());
         } finally {
-            dto.bytes.release();
-            dto2.bytes.release();
+            dto.bytes.releaseLast();
+            dto2.bytes.releaseLast();
         }
     }
 
@@ -1040,7 +1040,7 @@ public class YamlWireTest {
             assertEquals("{b=1234, c=hi, d=abc}", "" + yw.read("A").object());
 
         } finally {
-            from.release();
+            from.releaseLast();
         }
     }
 
@@ -1061,7 +1061,7 @@ public class YamlWireTest {
             assertEquals("end", "" + yw.read("e").object());
 
         } finally {
-            from.release();
+            from.releaseLast();
         }
     }
 
@@ -1084,7 +1084,7 @@ public class YamlWireTest {
             assertEquals("C", yw.readEvent(String.class));
             yw.endEvent();
         } finally {
-            from.release();
+            from.releaseLast();
         }
     }
 
@@ -1215,7 +1215,7 @@ public class YamlWireTest {
 
         assertEquals(expected, actual);
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -1657,7 +1657,7 @@ public class YamlWireTest {
             assertEquals(map, map2);
         });
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -2006,11 +2006,11 @@ public class YamlWireTest {
         Bytes C = Bytes.elasticByteBuffer();
         Bytes D = Bytes.elasticHeapByteBuffer(1);
 
-        void release() {
-            A.release();
-            B.release();
-            C.release();
-            D.release();
+        void releaseLast() {
+            A.releaseLast();
+            B.releaseLast();
+            C.releaseLast();
+            D.releaseLast();
         }
     }
 

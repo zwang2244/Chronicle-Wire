@@ -17,10 +17,12 @@
 package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.Byteable;
+import net.openhft.chronicle.bytes.BytesStore;
 import net.openhft.chronicle.bytes.BytesUtil;
 import net.openhft.chronicle.bytes.MappedBytes;
 import net.openhft.chronicle.bytes.ref.BinaryTwoLongReference;
 import net.openhft.chronicle.core.OS;
+import net.openhft.chronicle.core.ReferenceOwner;
 import net.openhft.chronicle.core.values.IntValue;
 import net.openhft.chronicle.core.values.LongValue;
 import net.openhft.chronicle.core.values.TwoLongValue;
@@ -64,20 +66,30 @@ public class BinaryWireWithMappedBytesTest {
 
         assertEquals("", bytes.toHexString());
 
-        assertEquals(5, ((Byteable) a).bytesStore().refCount());
+        BytesStore bs = ((Byteable) a).bytesStore();
+        assertEquals(6, bs.refCount());
 
         assertEquals("value: 1 value: 2 value: 3 value: 4, value2: 5", a + " " + b + " " + c + " " + d);
 
         // cause the old memory to drop out.
         bytes.compareAndSwapInt(1 << 20, 1, 1);
-        assertEquals(4, ((Byteable) a).bytesStore().refCount());
+        assertEquals(5, bs.refCount());
         System.out.println(a + " " + b + " " + c);
 
         bytes.compareAndSwapInt(2 << 20, 1, 1);
-        assertEquals(4, ((Byteable) a).bytesStore().refCount());
+        assertEquals(5, bs.refCount());
         System.out.println(a + " " + b + " " + c);
 
-        bytes.release();
+        bs.release((ReferenceOwner) a);
+        assertEquals(4, bs.refCount());
+        bs.release((ReferenceOwner) b);
+        assertEquals(3, bs.refCount());
+        bs.release((ReferenceOwner) c);
+        assertEquals(2, bs.refCount());
+        bs.release((ReferenceOwner) d);
+        assertEquals(1, bs.refCount());
+        bytes.releaseLast();
+        assertEquals(0, bs.refCount());
     }
 
     @After

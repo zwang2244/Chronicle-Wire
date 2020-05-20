@@ -59,7 +59,7 @@ public class JSONWireTest {
                 "{\"name\":\"item3\",\"number1\":3235666,\"number2\":1.12312},\n" +
                 "{\"name\":\"item4\",\"number1\":4235666,\"number2\":1.51231}]", out.toString());
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -142,7 +142,7 @@ public class JSONWireTest {
                     "  ]\n" +
                     "}\n", lists1.toString());
         } finally {
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 
@@ -160,7 +160,7 @@ public class JSONWireTest {
         assertEquals(item1, item2);
         assertEquals(item1.toString(), item2.toString());
 
-        w.bytes().release();
+        w.bytes().releaseLast();
     }
 
     @Test
@@ -180,8 +180,8 @@ public class JSONWireTest {
         w2.read("somebytes").text(bb);
         assertEquals(bs, bb);
 
-        w2.bytes().release();
-        bb.release();
+        w2.bytes().releaseLast();
+        bb.releaseLast();
     }
 
     @After

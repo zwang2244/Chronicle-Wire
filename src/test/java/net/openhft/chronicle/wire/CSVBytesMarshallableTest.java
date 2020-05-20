@@ -57,7 +57,7 @@ public class CSVBytesMarshallableTest {
         assertEquals("1.09029,1.090305,EURUSD,2,EBS\n" +
                 "1.50935,1.50936,GBPUSD,5,RTRS\n" +
                 "1.0906,1.09065,EURCHF,3,EBS\n", bytes2.toString());
-        bytes2.release();
+        bytes2.releaseLast();
     }
 
     // wire marshalling.
@@ -88,7 +88,7 @@ public class CSVBytesMarshallableTest {
         System.out.println(wt);
         System.out.println(binary ? bytes2.toHexString() : bytes2.toString());
 
-        bytes2.release();
+        bytes2.releaseLast();
     }
 }
 

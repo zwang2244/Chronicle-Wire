@@ -827,7 +827,7 @@ public class BinaryWireTest {
             @Nullable DTO o = valueIn3.typedMarshallable();
             Assert.assertEquals("world3", o.text);
         }
-        w.bytes().release();
+        w.bytes().releaseLast();
     }
 
     @Test

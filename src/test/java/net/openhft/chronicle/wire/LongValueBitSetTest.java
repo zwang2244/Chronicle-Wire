@@ -49,7 +49,7 @@ public class LongValueBitSetTest {
             } while (expectBit != -1);
 
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 }

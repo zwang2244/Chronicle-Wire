@@ -34,7 +34,7 @@ public class WireBug38Test {
         obj2.readMarshallable(wireType.apply(Bytes.fromString(output)));
 
         assertEquals(obj1, obj2);
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

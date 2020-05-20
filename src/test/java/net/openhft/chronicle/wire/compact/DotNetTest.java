@@ -42,6 +42,6 @@ public class DotNetTest {
         wire.copyTo(new TextWire(text));
         System.out.println(text);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 }

@@ -61,7 +61,7 @@ public class TextBinaryWireTest {
         Wire wire = createWire();
         @NotNull WireType wt = WireType.valueOf(wire);
         assertEquals(wireType, wt);
-        wire.bytes().release();
+        wire.bytes().releaseLast();
 
     }
 
@@ -82,7 +82,7 @@ public class TextBinaryWireTest {
         try (DocumentContext dc = wire.readingDocument(position)) {
             assertEquals("text", dc.wire().read(() -> "message").text());
         }
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -94,7 +94,7 @@ public class TextBinaryWireTest {
             wire.readComment(sb);
             assertEquals("This is a comment", sb.toString());
 
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 
@@ -112,7 +112,7 @@ public class TextBinaryWireTest {
 
         assertNull(wire.readEvent(RetentionPolicy.class));
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -133,7 +133,7 @@ public class TextBinaryWireTest {
 
         assertNull(wire.readEvent(RetentionPolicy.class));
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -153,7 +153,7 @@ public class TextBinaryWireTest {
         wire.read(() -> "c").int32(2, assertEquals);
         wire.read(() -> "d").int32(3, assertEquals);
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After

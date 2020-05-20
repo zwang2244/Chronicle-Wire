@@ -122,7 +122,7 @@ public class VanillaMethodWriterBuilderTest {
                 "  money: 3.456\n" +
                 "}\n" +
                 "]\n", sw.toString().replace("\r\n", "\n"));
-        bytes.release();
+        bytes.releaseLast();
         return s;
     }
 

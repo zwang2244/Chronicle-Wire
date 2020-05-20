@@ -15,8 +15,8 @@ public class WiresTest {
 
     @After
     public void after() throws Exception {
-        container1.bytesField.release();
-        container2.bytesField.release();
+        container1.bytesField.releaseLast();
+        container2.bytesField.releaseLast();
     }
 
     @Test

@@ -107,7 +107,7 @@ public class PrimArraysTest {
             for (int i = 0, len = Array.getLength(array); i < len; i++)
                 assertEquals(Array.get(array, i), Array.get(array2, i));
         } finally {
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 

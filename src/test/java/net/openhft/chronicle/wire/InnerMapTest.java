@@ -61,7 +61,7 @@ public class InnerMapTest {
             Assert.assertEquals(asString, tm.toString());
         }
 
-        b.release();
+        b.releaseLast();
     }
 
     @After

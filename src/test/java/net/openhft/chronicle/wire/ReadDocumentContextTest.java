@@ -66,7 +66,7 @@ public class ReadDocumentContextTest {
             Assert.assertEquals("someText2", wire.read(() -> "key2").text());
         }
 
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ReadDocumentContextTest {
             assertFalse(dc.isMetaData());
             Assert.assertEquals("someText2", wire.read(() -> "key2").text());
         }
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ReadDocumentContextTest {
             Assert.assertEquals("someText2", textWire.read(() -> "key2").text());
         }
 
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -184,7 +184,7 @@ public class ReadDocumentContextTest {
             Assert.assertEquals("someText2", textWire.read(() -> "key2").text());
         }
 
-        b.release();
+        b.releaseLast();
     }
 
     @Test
@@ -230,7 +230,7 @@ public class ReadDocumentContextTest {
             Assert.assertEquals("someText2", textWire.read(() -> "key2").text());
         }
 
-        b.release();
+        b.releaseLast();
     }
 
     @After

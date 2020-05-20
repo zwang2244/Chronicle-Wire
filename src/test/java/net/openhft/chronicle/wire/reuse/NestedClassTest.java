@@ -99,7 +99,7 @@ public class NestedClassTest {
         assertEquals("test2", sb.toString());
         assertEquals(outerClass2.toString(), outerClass0.toString());
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

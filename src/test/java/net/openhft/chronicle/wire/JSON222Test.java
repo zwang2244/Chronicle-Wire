@@ -126,8 +126,8 @@ public class JSON222Test {
             if (!fail)
                 throw new AssertionError(e);
         } finally {
-            bytes2.release();
-            bytes3.release();
+            bytes2.releaseLast();
+            bytes3.releaseLast();
         }
     }
 

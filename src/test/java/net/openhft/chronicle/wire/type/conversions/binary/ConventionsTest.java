@@ -162,7 +162,7 @@ public class ConventionsTest {
 
             throw new UnsupportedOperationException("");
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 }

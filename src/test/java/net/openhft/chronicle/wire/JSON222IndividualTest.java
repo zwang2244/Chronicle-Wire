@@ -83,7 +83,7 @@ public class JSON222IndividualTest {
             assertEquals(expected, wire.toString());
 
         } finally {
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 
@@ -102,7 +102,7 @@ public class JSON222IndividualTest {
 
         assertEquals(expected, o.toString());
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After

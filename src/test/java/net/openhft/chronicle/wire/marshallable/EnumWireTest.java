@@ -62,7 +62,7 @@ public class EnumWireTest {
             deserialized.readMarshallable(wire);
             return deserialized;
         } finally {
-            wire.bytes().release();
+            wire.bytes().releaseLast();
         }
     }
 

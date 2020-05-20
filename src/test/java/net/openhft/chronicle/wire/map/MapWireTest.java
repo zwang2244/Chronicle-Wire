@@ -80,7 +80,7 @@ public class MapWireTest {
                 .marshallableAsMap(Object.class, Object.class);
         assertEquals(m, m2);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

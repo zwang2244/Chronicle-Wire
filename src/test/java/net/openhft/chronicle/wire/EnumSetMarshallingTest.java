@@ -67,7 +67,7 @@ public class EnumSetMarshallingTest {
         tw.readingDocument().wire().read("key").marshallable(read);
 
         assertThat(read.f, is(written.f));
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -85,7 +85,7 @@ public class EnumSetMarshallingTest {
         tw.readingDocument().wire().read("key").marshallable(read);
 
         assertThat(read.f, is(written.f));
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class EnumSetMarshallingTest {
         tw.readingDocument().wire().read("key").marshallable(read);
 
         assertThat(read.f, is(written.f));
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class EnumSetMarshallingTest {
         tw.readingDocument().wire().read("key").marshallable(read);
 
         assertThat(read.f1.get(0).f, is(not(read.f2.get(0).f)));
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

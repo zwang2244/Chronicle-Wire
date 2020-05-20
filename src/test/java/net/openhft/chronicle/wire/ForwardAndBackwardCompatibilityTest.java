@@ -72,7 +72,7 @@ public class ForwardAndBackwardCompatibilityTest {
             Assert.assertEquals(dto2.three, null);
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ForwardAndBackwardCompatibilityTest {
             Assert.assertEquals(dto1.one, 1);
         }
 
-        wire.bytes().release();
+        wire.bytes().releaseLast();
     }
 
     @After
@@ -128,7 +128,7 @@ public class ForwardAndBackwardCompatibilityTest {
                 Assert.assertEquals("other data", dc.wire().read("other data").text());
             }
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 

@@ -29,7 +29,7 @@ public class IgnoreHighOrderBitsTest {
             out.write(b); // expecting 0 to be written
 
         } finally {
-            bytes.release();
+            bytes.releaseLast();
         }
     }
 

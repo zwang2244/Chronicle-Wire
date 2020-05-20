@@ -97,7 +97,7 @@ public class TextCompatibilityTest {
                     assertEquals(expected, s);
                 }
             } finally {
-                bytes.release();
+                bytes.releaseLast();
             }
             Object o = TEXT.fromFile(Object.class, filename);
         } catch (Exception e) {

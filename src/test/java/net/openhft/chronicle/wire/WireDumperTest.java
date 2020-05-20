@@ -63,7 +63,7 @@ public class WireDumperTest {
 
     @After
     public void tearDown() {
-        bytes.release();
+        bytes.releaseLast();
     }
 
     private void initTestData() {

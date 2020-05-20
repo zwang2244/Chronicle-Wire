@@ -81,7 +81,7 @@ public class SerializableWireTest {
                 .object();
         assertEquals(m, m2);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

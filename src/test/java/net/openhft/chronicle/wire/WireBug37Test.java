@@ -39,7 +39,7 @@ public class WireBug37Test {
 
         assertEquals(obj2, obj3);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

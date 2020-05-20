@@ -16,7 +16,7 @@ public class JSONNanTest {
             wire.write().object(value);
             Assert.assertEquals("\"\":{\"value\":null}", wire.toString());
         } finally {
-            b.release();
+            b.releaseLast();
         }
     }
 

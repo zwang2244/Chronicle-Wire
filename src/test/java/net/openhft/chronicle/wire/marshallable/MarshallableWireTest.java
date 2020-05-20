@@ -82,7 +82,7 @@ public class MarshallableWireTest {
         if (!m.equals(m2))
             assertEquals(m, m2);
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @After

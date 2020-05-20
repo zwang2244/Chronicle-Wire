@@ -57,7 +57,7 @@ public class UsingTestMarshallable {
         System.out.println(value);
 
         //  Assert.assertTrue(replace.length() > 1);
-        byteBufferBytes.release();
+        byteBufferBytes.releaseLast();
     }
 
     /**
@@ -82,7 +82,7 @@ public class UsingTestMarshallable {
 
         Assert.assertEquals("text", result.text.toString());
 
-        bytes.release();
+        bytes.releaseLast();
     }
 
     @Test
