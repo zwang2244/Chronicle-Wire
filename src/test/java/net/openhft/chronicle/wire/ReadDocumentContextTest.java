@@ -72,46 +72,47 @@ public class ReadDocumentContextTest {
     @Test
     public void testWritingNotCompleteDocumentShared() throws IOException {
 
-        @NotNull MappedBytes b = MappedBytes.mappedBytes(File.createTempFile("delete", "me"), 64 << 10);
-        assertTrue(b.sharedMemory());
-        @NotNull Wire wire = new TextWire(b).useBinaryDocuments();
-        assertTrue(wire.notCompleteIsNotPresent());
+        File tempFile = File.createTempFile("delete", "me");
+        try (MappedBytes b = MappedBytes.mappedBytes(tempFile, 64 << 10)) {
+            assertTrue(b.sharedMemory());
+            @NotNull Wire wire = new TextWire(b).useBinaryDocuments();
+            assertTrue(wire.notCompleteIsNotPresent());
 
-        try (DocumentContext dc = wire.readingDocument()) {
-            assertFalse(dc.isPresent());
-            assertFalse(dc.isNotComplete());
+            try (DocumentContext dc = wire.readingDocument()) {
+                assertFalse(dc.isPresent());
+                assertFalse(dc.isNotComplete());
+            }
+
+            long pos = wire.bytes().writePosition();
+            wire.writeNotCompleteDocument(false, w -> w.write("key").text("someText"));
+
+            wire.writeDocument(false, w -> w.write("key2").text("someText2"));
+
+            try (DocumentContext dc = wire.readingDocument()) {
+                assertFalse(dc.isPresent());
+                assertTrue(dc.isNotComplete());
+            }
+
+            // go back and make the document complete.
+            int header = wire.bytes().readInt(pos);
+            assertTrue(wire.bytes().compareAndSwapInt(pos, header, header & ~Wires.NOT_COMPLETE));
+
+            // now we can read it.
+            try (DocumentContext dc = wire.readingDocument()) {
+                assertTrue(dc.isPresent());
+                assertFalse(dc.isNotComplete());
+                assertFalse(dc.isMetaData());
+                Assert.assertEquals("someText", wire.read(() -> "key").text());
+            }
+
+            // and the message after it.
+            try (DocumentContext dc = wire.readingDocument()) {
+                assertTrue(dc.isPresent());
+                assertFalse(dc.isNotComplete());
+                assertFalse(dc.isMetaData());
+                Assert.assertEquals("someText2", wire.read(() -> "key2").text());
+            }
         }
-
-        long pos = wire.bytes().writePosition();
-        wire.writeNotCompleteDocument(false, w -> w.write("key").text("someText"));
-
-        wire.writeDocument(false, w -> w.write("key2").text("someText2"));
-
-        try (DocumentContext dc = wire.readingDocument()) {
-            assertFalse(dc.isPresent());
-            assertTrue(dc.isNotComplete());
-        }
-
-        // go back and make the document complete.
-        int header = wire.bytes().readInt(pos);
-        assertTrue(wire.bytes().compareAndSwapInt(pos, header, header & ~Wires.NOT_COMPLETE));
-
-        // now we can read it.
-        try (DocumentContext dc = wire.readingDocument()) {
-            assertTrue(dc.isPresent());
-            assertFalse(dc.isNotComplete());
-            assertFalse(dc.isMetaData());
-            Assert.assertEquals("someText", wire.read(() -> "key").text());
-        }
-
-        // and the message after it.
-        try (DocumentContext dc = wire.readingDocument()) {
-            assertTrue(dc.isPresent());
-            assertFalse(dc.isNotComplete());
-            assertFalse(dc.isMetaData());
-            Assert.assertEquals("someText2", wire.read(() -> "key2").text());
-        }
-        b.releaseLast();
     }
 
     @Test
