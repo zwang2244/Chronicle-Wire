@@ -16,10 +16,7 @@
 
 package net.openhft.chronicle.wire;
 
-import net.openhft.chronicle.bytes.Byteable;
-import net.openhft.chronicle.bytes.BytesStore;
-import net.openhft.chronicle.bytes.BytesUtil;
-import net.openhft.chronicle.bytes.MappedBytes;
+import net.openhft.chronicle.bytes.*;
 import net.openhft.chronicle.bytes.ref.BinaryTwoLongReference;
 import net.openhft.chronicle.core.OS;
 import net.openhft.chronicle.core.ReferenceOwner;
@@ -33,10 +30,48 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 public class BinaryWireWithMappedBytesTest {
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void simpleTestRefAtStart() throws FileNotFoundException {
+        @NotNull File file = new File(OS.TARGET, "simpleTestRefAtStart.map");
+        file.delete();
+        BytesStore bs;
+        try (MappedBytes bytes = MappedBytes.mappedBytes(file, 64 << 10)) {
+            Wire wire = WireType.BINARY.apply(bytes);
+            wire.write(() -> "int32").int32forBinding(1);
+            @NotNull IntValue a = wire.newIntReference();
+            bs = bytes.bytesStore();
+
+            assertEquals(2, bs.refCount());
+
+            wire.read().int32ForBinding(a);
+
+            assertEquals(3, bs.refCount());
+
+            assertEquals(1, a.getVolatileValue());
+
+            // cause the old memory to drop out.
+            bytes.compareAndSwapInt(1 << 20, 1, 1);
+            assertNotSame(bs, bytes.bytesStore());
+            assertEquals(2, bs.refCount());
+            assertEquals(2, bytes.bytesStore().refCount());
+            System.out.println(a);
+
+            bytes.compareAndSwapInt(2 << 20, 1, 1);
+            assertEquals(2, bs.refCount());
+            System.out.println(a);
+
+            bs.release((ReferenceOwner) a);
+            assertEquals(1, bs.refCount());
+        }
+        MappedFile.checkMappedFiles();
+        assertEquals(0, bs.refCount());
+    }
+
     @SuppressWarnings("rawtypes")
     @Test
     public void testRefAtStart() throws FileNotFoundException {
@@ -68,6 +103,7 @@ public class BinaryWireWithMappedBytesTest {
             assertEquals("", bytes.toHexString());
 
             bs = ((Byteable) a).bytesStore();
+            assertSame(((Byteable) b).bytesStore(), bs);
             assertEquals(6, bs.refCount());
 
             assertEquals("value: 1 value: 2 value: 3 value: 4, value2: 5", a + " " + b + " " + c + " " + d);
@@ -90,6 +126,7 @@ public class BinaryWireWithMappedBytesTest {
             bs.release((ReferenceOwner) d);
             assertEquals(1, bs.refCount());
         }
+        MappedFile.checkMappedFiles();
         assertEquals(0, bs.refCount());
     }
 
