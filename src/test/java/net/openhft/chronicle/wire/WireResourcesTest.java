@@ -47,12 +47,12 @@ public class WireResourcesTest {
 
             assertEquals(1, mb.mappedFile().refCount());
             wire.writeFirstHeader(); // first touches the file.
-            assertEquals(1, mb.mappedFile().refCount());
+            assertEquals(2, mb.mappedFile().refCount());
 
             wire.updateFirstHeader();
             assert wire.endUse();
 
-            assertEquals(1, mb.mappedFile().refCount());
+            assertEquals(2, mb.mappedFile().refCount());
             assertEquals(1, mb.refCount());
 
             mb0 = mb;
@@ -111,11 +111,11 @@ public class WireResourcesTest {
 
             wire.writeFirstHeader();
             assertEquals(1, wire.bytes().refCount());
-            assertEquals(1, t.mappedFile().refCount()); // now there is a mapping used as well as use
+            assertEquals(2, t.mappedFile().refCount()); // now there is a mapping used as well as use
             // in MappedBytes
 
             assertEquals(1, wire.bytes().refCount());
-            assertEquals(1, mappedFile(wire).refCount());
+            assertEquals(2, mappedFile(wire).refCount());
 
             wire.bytes().writeSkip(128000);
             wire.updateFirstHeader();
@@ -123,20 +123,20 @@ public class WireResourcesTest {
 
             writeMessage(wire);
 
-            assertEquals(1, mappedFile(wire).refCount());
+            assertEquals(2, mappedFile(wire).refCount());
 
             writeMessage(wire);
 
             // new block
-            assertEquals(1, mappedFile(wire).refCount());
+            assertEquals(2, mappedFile(wire).refCount());
 
             writeMessage(wire);
 
-            assertEquals(1, mappedFile(wire).refCount());
+            assertEquals(2, mappedFile(wire).refCount());
 
             writeMessage(wire);
 
-            assertEquals(1, mappedFile(wire).refCount());
+            assertEquals(2, mappedFile(wire).refCount());
 
         }
         // the MappedFile was created by MappedBytes

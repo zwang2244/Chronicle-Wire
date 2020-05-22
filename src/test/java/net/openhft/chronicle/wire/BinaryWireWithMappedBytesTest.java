@@ -46,27 +46,27 @@ public class BinaryWireWithMappedBytesTest {
             @NotNull IntValue a = wire.newIntReference();
             bs = bytes.bytesStore();
 
-            assertEquals(2, bs.refCount());
+            assertEquals(1, bs.refCount());
 
             wire.read().int32ForBinding(a);
 
-            assertEquals(3, bs.refCount());
+            assertEquals(2, bs.refCount());
 
             assertEquals(1, a.getVolatileValue());
 
             // cause the old memory to drop out.
             bytes.compareAndSwapInt(1 << 20, 1, 1);
             assertNotSame(bs, bytes.bytesStore());
-            assertEquals(2, bs.refCount());
-            assertEquals(2, bytes.bytesStore().refCount());
+            assertEquals(1, bs.refCount());
+            assertEquals(1, bytes.bytesStore().refCount());
             System.out.println(a);
 
             bytes.compareAndSwapInt(2 << 20, 1, 1);
-            assertEquals(2, bs.refCount());
+            assertEquals(1, bs.refCount());
             System.out.println(a);
 
-            bs.release((ReferenceOwner) a);
-            assertEquals(1, bs.refCount());
+            bs.releaseLast((ReferenceOwner) a);
+            assertEquals(0, bs.refCount());
         }
         MappedFile.checkMappedFiles();
         assertEquals(0, bs.refCount());
@@ -104,27 +104,27 @@ public class BinaryWireWithMappedBytesTest {
 
             bs = ((Byteable) a).bytesStore();
             assertSame(((Byteable) b).bytesStore(), bs);
-            assertEquals(6, bs.refCount());
+            assertEquals(5, bs.refCount());
 
             assertEquals("value: 1 value: 2 value: 3 value: 4, value2: 5", a + " " + b + " " + c + " " + d);
 
             // cause the old memory to drop out.
             bytes.compareAndSwapInt(1 << 20, 1, 1);
-            assertEquals(5, bs.refCount());
+            assertEquals(4, bs.refCount());
             System.out.println(a + " " + b + " " + c);
 
             bytes.compareAndSwapInt(2 << 20, 1, 1);
-            assertEquals(5, bs.refCount());
+            assertEquals(4, bs.refCount());
             System.out.println(a + " " + b + " " + c);
 
             bs.release((ReferenceOwner) a);
-            assertEquals(4, bs.refCount());
-            bs.release((ReferenceOwner) b);
             assertEquals(3, bs.refCount());
-            bs.release((ReferenceOwner) c);
+            bs.release((ReferenceOwner) b);
             assertEquals(2, bs.refCount());
-            bs.release((ReferenceOwner) d);
+            bs.release((ReferenceOwner) c);
             assertEquals(1, bs.refCount());
+            bs.release((ReferenceOwner) d);
+            assertEquals(0, bs.refCount());
         }
         MappedFile.checkMappedFiles();
         assertEquals(0, bs.refCount());
