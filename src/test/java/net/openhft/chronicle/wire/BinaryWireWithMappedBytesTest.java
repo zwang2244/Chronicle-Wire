@@ -40,7 +40,7 @@ public class BinaryWireWithMappedBytesTest {
         @NotNull File file = new File(OS.TARGET, "simpleTestRefAtStart.map");
         file.delete();
         BytesStore bs;
-        try (MappedBytes bytes = MappedBytes.mappedBytes(file, 64 << 10)) {
+        try (MappedBytes bytes = MappedBytes.mappedBytes(file, 64 << 10, OS.pageSize())) {
             Wire wire = WireType.BINARY.apply(bytes);
             wire.write(() -> "int32").int32forBinding(1);
             @NotNull IntValue a = wire.newIntReference();
@@ -78,7 +78,7 @@ public class BinaryWireWithMappedBytesTest {
         @NotNull File file = new File(OS.TARGET, "testRefAtStart.map");
         file.delete();
         BytesStore bs;
-        try (MappedBytes bytes = MappedBytes.mappedBytes(file, 64 << 10)) {
+        try (MappedBytes bytes = MappedBytes.mappedBytes(file, 64 << 10, OS.pageSize())) {
             Wire wire = WireType.BINARY.apply(bytes);
             wire.write(() -> "int32").int32forBinding(1)
                     .write(() -> "int32b").int32forBinding(2)

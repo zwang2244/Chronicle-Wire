@@ -18,6 +18,7 @@ package net.openhft.chronicle.wire;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.bytes.MappedBytes;
 import net.openhft.chronicle.bytes.MappedFile;
+import net.openhft.chronicle.core.OS;
 import net.openhft.chronicle.core.ReferenceOwner;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class WireResourcesTest {
         tmp.deleteOnExit();
 
         MappedBytes mb0;
-        try (MappedBytes mb = MappedBytes.mappedBytes(tmp, 64 * 1024)) {
+        try (MappedBytes mb = MappedBytes.mappedBytes(tmp, 64 * 1024, OS.pageSize())) {
             assertEquals(1, mb.mappedFile().refCount());
             assertEquals(1, mb.refCount());
 
@@ -67,7 +68,7 @@ public class WireResourcesTest {
         tmp.deleteOnExit();
 
         Wire wire;
-        try (MappedBytes mb = MappedBytes.mappedBytes(tmp, 64 * 1024)) {
+        try (MappedBytes mb = MappedBytes.mappedBytes(tmp, 64 * 1024, OS.pageSize())) {
             assertEquals(1, mb.mappedFile().refCount());
             assertEquals(1, mb.refCount());
 
@@ -97,7 +98,7 @@ public class WireResourcesTest {
         tmp.deleteOnExit();
 
         Wire wire;
-        try (MappedBytes t = MappedBytes.mappedBytes(tmp, 256 * 1024)) {
+        try (MappedBytes t = MappedBytes.mappedBytes(tmp, 256 * 1024, OS.pageSize())) {
             assertEquals(1, t.refCount());
             assertEquals(1, t.mappedFile().refCount());
             wire = WireType.TEXT.apply(t);

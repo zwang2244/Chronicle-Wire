@@ -20,6 +20,7 @@ package net.openhft.chronicle.wire;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.bytes.BytesUtil;
 import net.openhft.chronicle.bytes.MappedBytes;
+import net.openhft.chronicle.core.OS;
 import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Assert;
@@ -73,7 +74,7 @@ public class ReadDocumentContextTest {
     public void testWritingNotCompleteDocumentShared() throws IOException {
 
         File tempFile = File.createTempFile("delete", "me");
-        try (MappedBytes b = MappedBytes.mappedBytes(tempFile, 64 << 10)) {
+        try (MappedBytes b = MappedBytes.mappedBytes(tempFile, 64 << 10, OS.pageSize())) {
             assertTrue(b.sharedMemory());
             @NotNull Wire wire = new TextWire(b).useBinaryDocuments();
             assertTrue(wire.notCompleteIsNotPresent());
