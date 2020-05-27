@@ -17,9 +17,10 @@
 package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.Bytes;
+import net.openhft.chronicle.core.io.AbstractCloseable;
 import org.jetbrains.annotations.NotNull;
 
-public class TextWriteDocumentContext implements WriteDocumentContext {
+public class TextWriteDocumentContext extends AbstractCloseable implements WriteDocumentContext {
     protected Wire wire;
     private boolean metaData;
 
@@ -47,6 +48,8 @@ public class TextWriteDocumentContext implements WriteDocumentContext {
     @Override
     @SuppressWarnings("rawtypes")
     public void close() {
+        if (isClosed())
+            return;
         @NotNull Bytes bytes = wire().bytes();
         long l = bytes.writePosition();
         if (l < 1 || bytes.peekUnsignedByte(l - 1) >= ' ')
@@ -54,6 +57,7 @@ public class TextWriteDocumentContext implements WriteDocumentContext {
         if (TextMethodWriterInvocationHandler.ENABLE_EOD)
             bytes.append("---\n");
         wire().getValueOut().resetBetweenDocuments();
+        super.close();
     }
 
     @Override

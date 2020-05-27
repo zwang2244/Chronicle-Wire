@@ -18,11 +18,12 @@ package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.bytes.HexDumpBytes;
+import net.openhft.chronicle.core.io.AbstractCloseable;
 import org.jetbrains.annotations.NotNull;
 
 import static net.openhft.chronicle.wire.Wires.toIntU30;
 
-public class BinaryWriteDocumentContext implements WriteDocumentContext {
+public class BinaryWriteDocumentContext extends AbstractCloseable implements WriteDocumentContext {
     protected Wire wire;
     protected long position = -1;
     protected int tmpHeader;
@@ -56,6 +57,8 @@ public class BinaryWriteDocumentContext implements WriteDocumentContext {
     @Override
     @SuppressWarnings("rawtypes")
     public void close() {
+        if (isClosed())
+            return;
         @NotNull Bytes bytes = wire().bytes();
         long position1 = bytes.writePosition();
 //        if (position1 < position)
@@ -65,6 +68,8 @@ public class BinaryWriteDocumentContext implements WriteDocumentContext {
             length0 = (int) length0;
         int length = metaDataBit | toIntU30(length0, "Document length %,d out of 30-bit int range.");
         bytes.testAndSetInt(position, tmpHeader, length);
+
+        super.close();
     }
 
     @Override

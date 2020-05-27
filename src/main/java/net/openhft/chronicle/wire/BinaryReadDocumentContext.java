@@ -18,12 +18,13 @@ package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.core.Jvm;
+import net.openhft.chronicle.core.io.AbstractCloseable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.openhft.chronicle.wire.Wires.lengthOf;
 
-public class BinaryReadDocumentContext implements ReadDocumentContext {
+public class BinaryReadDocumentContext extends AbstractCloseable implements ReadDocumentContext {
     private final boolean ensureFullRead;
     public long start = -1;
     public long lastStart = -1;
@@ -81,6 +82,8 @@ public class BinaryReadDocumentContext implements ReadDocumentContext {
 
     @Override
     public void close() {
+        if (isClosed())
+            return;
         long readLimit = this.readLimit;
         long readPosition = this.readPosition;
 
@@ -122,6 +125,7 @@ public class BinaryReadDocumentContext implements ReadDocumentContext {
 
         present = false;
         rollback = false;
+        super.close();
     }
 
     @Override

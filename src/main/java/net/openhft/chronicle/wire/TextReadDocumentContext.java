@@ -18,10 +18,11 @@ package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.bytes.BytesStore;
+import net.openhft.chronicle.core.io.AbstractCloseable;
 import org.jetbrains.annotations.Nullable;
 
 
-public class TextReadDocumentContext implements ReadDocumentContext {
+public class TextReadDocumentContext extends AbstractCloseable implements ReadDocumentContext {
     @SuppressWarnings("rawtypes")
     public static final BytesStore MSG_SEP = BytesStore.from("---");
     @Nullable
@@ -69,6 +70,8 @@ public class TextReadDocumentContext implements ReadDocumentContext {
 
     @Override
     public void close() {
+        if (isClosed())
+            return;
         long readLimit = this.readLimit;
         long readPosition = this.readPosition;
 
@@ -77,6 +80,7 @@ public class TextReadDocumentContext implements ReadDocumentContext {
         wire0.bytes.readPosition(readPosition);
         wire.getValueIn().resetState();
         present = false;
+        super.close();
     }
 
     public static void consumeToEndOfMessage(Bytes<?> bytes) {

@@ -4,6 +4,7 @@
 
 package net.openhft.chronicle.wire;
 
+import net.openhft.chronicle.core.StackTrace;
 import net.openhft.chronicle.core.io.IORuntimeException;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,5 +83,10 @@ public abstract class WrappedDocumentContext implements DocumentContext {
     @Override
     public boolean isClosed() {
         return dc.isClosed();
+    }
+
+    @Override
+    public StackTrace closedHere() {
+        return dc.closedHere();
     }
 }

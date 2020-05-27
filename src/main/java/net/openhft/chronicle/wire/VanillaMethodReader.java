@@ -23,6 +23,7 @@ import net.openhft.chronicle.bytes.MethodReaderInterceptorReturns;
 import net.openhft.chronicle.core.Jvm;
 import net.openhft.chronicle.core.Maths;
 import net.openhft.chronicle.core.OS;
+import net.openhft.chronicle.core.io.AbstractCloseable;
 import net.openhft.chronicle.core.io.Closeable;
 import net.openhft.chronicle.core.util.Annotations;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +44,7 @@ import static net.openhft.chronicle.wire.VanillaWireParser.SKIP_READABLE_BYTES;
 
 
 @SuppressWarnings("rawtypes")
-public class VanillaMethodReader implements MethodReader {
+public class VanillaMethodReader extends AbstractCloseable implements MethodReader {
 
     static final Object[] NO_ARGS = {};
     static final Logger LOGGER = LoggerFactory.getLogger(VanillaMethodReader.class);
@@ -54,7 +55,7 @@ public class VanillaMethodReader implements MethodReader {
     @NotNull
     private final WireParser wireParser;
     private final MessageHistory messageHistory = MessageHistory.get();
-    private boolean closeIn = false, closed;
+    private boolean closeIn = false;
     private MethodReaderInterceptorReturns methodReaderInterceptorReturns;
 
     public VanillaMethodReader(MarshallableIn in,
@@ -489,14 +490,11 @@ public class VanillaMethodReader implements MethodReader {
 
     @Override
     public void close() {
+        if (isClosed())
+            return;
         if (closeIn)
             Closeable.closeQuietly(in);
-        closed = true;
-    }
-
-    @Override
-    public boolean isClosed() {
-        return closed;
+        super.close();
     }
 
     public MethodReaderInterceptorReturns methodReaderInterceptorReturns() {

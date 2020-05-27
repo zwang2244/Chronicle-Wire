@@ -17,6 +17,8 @@
 package net.openhft.chronicle.wire;
 
 
+import net.openhft.chronicle.core.StackTrace;
+
 public enum NoDocumentContext implements DocumentContext {
     INSTANCE;
 
@@ -63,5 +65,15 @@ public enum NoDocumentContext implements DocumentContext {
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public boolean isClosed() {
+        return false;
+    }
+
+    @Override
+    public StackTrace closedHere() {
+        return null;
     }
 }
