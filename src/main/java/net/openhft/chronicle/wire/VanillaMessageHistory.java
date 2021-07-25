@@ -18,12 +18,13 @@ package net.openhft.chronicle.wire;
 import net.openhft.chronicle.bytes.Bytes;
 import net.openhft.chronicle.bytes.BytesIn;
 import net.openhft.chronicle.bytes.BytesOut;
+import net.openhft.chronicle.bytes.ReadBytesMarshallableSourceContext;
 import net.openhft.chronicle.core.io.IORuntimeException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("rawtypes")
-public class VanillaMessageHistory extends SelfDescribingMarshallable implements MessageHistory {
+public class VanillaMessageHistory extends SelfDescribingMarshallable implements MessageHistory, ReadBytesMarshallableSourceContext {
     public static final int MESSAGE_HISTORY_LENGTH = 128;
     private static final ThreadLocal<MessageHistory> THREAD_LOCAL =
             ThreadLocal.withInitial(() -> {
@@ -196,10 +197,14 @@ public class VanillaMessageHistory extends SelfDescribingMarshallable implements
         assert !addSourceDetails : "Bytes marshalling does not yet support addSourceDetails";
     }
 
-    public void readMarshallable(@NotNull BytesIn bytes, @NotNull SourceContext dc) throws IORuntimeException {
+    @Override
+    public void readMarshallable(@NotNull BytesIn bytes, @Nullable Object parent) throws IORuntimeException {
         readMarshallable0(bytes);
         if (addSourceDetails) {
-            addSource(dc.sourceId(), dc.index());
+            if (parent instanceof SourceContext) {
+                @Nullable SourceContext dc = (SourceContext) parent;
+                addSource(dc.sourceId(), dc.index());
+            }
             addTiming(nanoTime());
         }
     }
@@ -320,6 +325,11 @@ public class VanillaMessageHistory extends SelfDescribingMarshallable implements
         copy.timingsArray[this.timings] = 0;
         copy.timings = this.timings;
         return copy;
+    }
+
+    @Override
+    public boolean usesSelfDescribingMessage() {
+        return super.usesSelfDescribingMessage();//////////////
     }
 
     private String toStringSources() {
