@@ -19,9 +19,11 @@ package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.MethodReader;
 import net.openhft.chronicle.bytes.ReadBytesMarshallableSourceContext;
+import net.openhft.chronicle.core.Jvm;
 import net.openhft.chronicle.core.annotation.UsedViaReflection;
 
 public interface MessageHistory extends Marshallable {
+    boolean USDM = !Jvm.getBoolean("byteInBinaryMH");
 
     /**
      * Returns the {@code MessageHistory} to update it or read it.
@@ -46,8 +48,10 @@ public interface MessageHistory extends Marshallable {
     static void writeHistory(DocumentContext dc) {
         Wire wire = dc.wire();
         if (wire.bytes().readRemaining() == 0) // only add to the start of a message. i.e. for chained calls.
-            wire.writeEventName(MethodReader.HISTORY)//////////////
-                    .marshallable(get());
+            if (!USDM)///// or by ID????
+                wire.writeEventId(MethodReader.MESSAGE_HISTORY_METHOD_ID).marshallable(get());
+            else
+                wire.writeEventName(MethodReader.HISTORY).marshallable(get());
     }
 
     static void readHistory(ValueIn valueIn, MessageHistory object) {

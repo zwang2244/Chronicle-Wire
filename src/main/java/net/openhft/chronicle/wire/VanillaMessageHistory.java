@@ -241,6 +241,11 @@ public class VanillaMessageHistory extends SelfDescribingMarshallable implements
         dirty = false;
     }
 
+    @Override
+    public boolean usesSelfDescribingMessage() {
+        return USDM;
+    }
+
     protected long nanoTime() {
         return System.nanoTime();
     }
@@ -325,11 +330,6 @@ public class VanillaMessageHistory extends SelfDescribingMarshallable implements
         copy.timingsArray[this.timings] = 0;
         copy.timings = this.timings;
         return copy;
-    }
-
-    @Override
-    public boolean usesSelfDescribingMessage() {
-        return super.usesSelfDescribingMessage();//////////////
     }
 
     private String toStringSources() {

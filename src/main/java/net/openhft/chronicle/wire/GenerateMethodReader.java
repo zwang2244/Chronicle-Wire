@@ -206,7 +206,7 @@ public class GenerateMethodReader {
                 "throw new IllegalStateException(\"Failed to read method name or ID\");\n" +
                 "switch (lastEventName) {\n" +
                 "case MethodReader.HISTORY:\n" +
-                "VanillaMessageHistory.readHistory(valueIn, messageHistory);\n" +
+                "MessageHistory.readHistory(valueIn, messageHistory);\n" +
                 "break;\n\n");
 
         sourceCode.append(eventNameSwitchBlock);
