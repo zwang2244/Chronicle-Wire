@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Descendant of {@link ReadBytesMarshallable} which allows a reader to provide context.
- * See uses in Chronicle-Wire
  */
 public interface ReadBytesMarshallableSourceContext extends ReadBytesMarshallable {
     /**

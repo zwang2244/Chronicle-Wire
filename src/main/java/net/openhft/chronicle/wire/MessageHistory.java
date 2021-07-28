@@ -18,6 +18,7 @@
 package net.openhft.chronicle.wire;
 
 import net.openhft.chronicle.bytes.MethodReader;
+import net.openhft.chronicle.bytes.ReadBytesMarshallable;
 import net.openhft.chronicle.core.Jvm;
 import net.openhft.chronicle.core.annotation.UsedViaReflection;
 
@@ -46,20 +47,24 @@ public interface MessageHistory extends Marshallable {
     @UsedViaReflection
     static void writeHistory(DocumentContext dc) {
         Wire wire = dc.wire();
-        if (wire.bytes().readRemaining() == 0) // only add to the start of a message. i.e. for chained calls.
-            if (!USDM)///// or by ID????
-                wire.writeEventId(MethodReader.MESSAGE_HISTORY_METHOD_ID).marshallable(get());
+        if (wire.bytes().readRemaining() == 0) { // only add to the start of a message. i.e. for chained calls.
+            MessageHistory messageHistory = get();
+            if (!wire.useSelfDescribingMessage(messageHistory))
+                wire.writeEventId(MethodReader.MESSAGE_HISTORY_METHOD_ID).marshallable(messageHistory);
             else
-                wire.writeEventName(MethodReader.HISTORY).marshallable(get());
+                wire.writeEventName(MethodReader.HISTORY).marshallable(messageHistory);
+        }
     }
 
-    static void readHistory(ValueIn valueIn, MessageHistory object) {
+    static void readHistory(ValueIn valueIn, MessageHistory messageHistory) {
         valueIn.applyToMarshallable(wireIn -> {
-            if (object instanceof ReadBytesMarshallableSourceContext && !wireIn.useSelfDescribingMessage(object))
-                ((VanillaMessageHistory) object).readMarshallable(wireIn.bytes(), wireIn.parent());
+            if (wireIn.useSelfDescribingMessage(messageHistory))
+                messageHistory.readMarshallable(valueIn.wireIn());
+            else if (messageHistory instanceof ReadBytesMarshallableSourceContext)
+                ((ReadBytesMarshallableSourceContext) messageHistory).readMarshallable(wireIn.bytes(), wireIn.parent());
             else
-                SerializationStrategies.MARSHALLABLE.readUsing(object, valueIn, BracketType.NONE);
-            return object;
+                ((ReadBytesMarshallable)messageHistory).readMarshallable(wireIn.bytes());
+            return messageHistory;
         });
     }
 
