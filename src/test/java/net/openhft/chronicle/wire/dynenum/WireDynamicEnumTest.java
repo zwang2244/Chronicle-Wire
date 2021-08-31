@@ -203,7 +203,11 @@ public class WireDynamicEnumTest extends WireTestCommon {
 
             @Override
             public void unwrap2(UnwrapsWDENum2 unwrapsWDENum2) {
+                //@Zhilin: Here the d has some problem when it is cast to string and print out
                 WDENum2 d = unwrapsWDENum2.d;
+                
+                System.out.println("Zhilin prints out d's keys: " + d);
+                System.out.println("SEE if i can sort it" + d.toString());
                 sw.append("Update " + d + "\n");
                 updateEnum(d);
             }
@@ -211,6 +215,7 @@ public class WireDynamicEnumTest extends WireTestCommon {
         for (int i = 0; i < 8; i++)
             assertTrue(reader.readOne());
         assertFalse(reader.readOne());
+        ///@Zhilin: Here is the flasky test I need to debug!
         assertEquals("ONE ~ One ~ 1\n" +
                 "Update FOUR\n" +
                 "FOUR ~ Four ~ 4\n" +
@@ -307,6 +312,14 @@ public class WireDynamicEnumTest extends WireTestCommon {
         public int ordinal() {
             return -1;
         }
+
+        //override the tostring
+        @Override
+        public String toString(){
+            String result = "!WDENum2 {\n" + "  name: " + this.name + ",\n" + "  nice: " + this.nice + ",\n" + "  value: " + this.value + "\n" + "}\n";
+            return result;
+        }
+
     }
 
     static class HoldsWDENum extends SelfDescribingMarshallable {
@@ -315,6 +328,12 @@ public class WireDynamicEnumTest extends WireTestCommon {
         public HoldsWDENum(WDENums a, WDENums b) {
             this.a = a;
             this.b = b;
+        }
+
+        @Override
+        public String toString(){
+            String result = "!HoldsWDENum {\n" + "  a: " + this.a + ",\n" + "  b: " + this.b + "\n" + "}\n";
+            return result;
         }
     }
 

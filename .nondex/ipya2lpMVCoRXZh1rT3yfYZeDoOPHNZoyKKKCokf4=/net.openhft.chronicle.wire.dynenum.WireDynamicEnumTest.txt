@@ -1,0 +1,23 @@
+-------------------------------------------------------------------------------
+Test set: net.openhft.chronicle.wire.dynenum.WireDynamicEnumTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.913 s <<< FAILURE! - in net.openhft.chronicle.wire.dynenum.WireDynamicEnumTest
+net.openhft.chronicle.wire.dynenum.WireDynamicEnumTest.deserialize2  Time elapsed: 0.901 s  <<< FAILURE!
+org.junit.ComparisonFailure: 
+expected:<...pdate !WDENum2 {
+  n[ame: KING,
+  nice: King,
+  value: 112]
+}
+
+ONE = One = 1
+TW...> but was:<...pdate !WDENum2 {
+  n[ice: King,
+  value: 112,
+  name: KING]
+}
+
+ONE = One = 1
+TW...>
+	at net.openhft.chronicle.wire.dynenum.WireDynamicEnumTest.deserialize2(WireDynamicEnumTest.java:218)
+
